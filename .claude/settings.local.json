@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Skill(claude-developer-platform)",
-      "Bash(git:*)"
-    ]
-  }
-}
