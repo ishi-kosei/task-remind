@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>タスクリマインダー</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1>📋 タスクリマインダー</h1>
+      <span id="line-badge" class="badge">LINE...</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="add-card">
+      <h2 class="section-title">タスクを追加</h2>
+      <form id="add-form">
+        <input type="text" id="f-title" placeholder="タスク内容を入力..." required autocomplete="off">
+        <div class="row">
+          <div class="field">
+            <label>期限日</label>
+            <input type="date" id="f-date" required>
+          </div>
+          <div class="field">
+            <label>時間（任意）</label>
+            <input type="time" id="f-time">
+          </div>
+        </div>
+        <button type="submit" id="add-btn">追加する</button>
+      </form>
+    </section>
+
+    <section id="task-list">
+      <div class="loading">読み込み中...</div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
