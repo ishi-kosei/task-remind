@@ -99,7 +99,7 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
     }
 
     // ── タスク追加パース ──────────────────────────────────
-    const { title, dueDate, dueTime } = parseTask(text);
+    const { title, dueDate, dueTime } = await parseTask(text);
 
     if (!title) {
       await reply(lineClient, event.replyToken,
