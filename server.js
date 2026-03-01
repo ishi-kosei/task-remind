@@ -38,6 +38,7 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
   const sig = req.headers['x-line-signature'];
 
   if (!validateSignature(req.body, process.env.LINE_CHANNEL_SECRET || '', sig)) {
+    console.log('[Webhook] 署名検証失敗');
     return res.status(401).send('Unauthorized');
   }
 
@@ -47,8 +48,11 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
   try {
     body = JSON.parse(req.body.toString());
   } catch {
+    console.log('[Webhook] JSONパース失敗');
     return;
   }
+
+  console.log('[Webhook] イベント数:', body.events?.length ?? 0);
 
   const lineClient = process.env.LINE_CHANNEL_ACCESS_TOKEN
     ? new messagingApi.MessagingApiClient({
@@ -56,11 +60,14 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
       })
     : null;
 
+  if (!lineClient) console.log('[Webhook] LINE_CHANNEL_ACCESS_TOKEN が未設定');
+
   for (const event of body.events || []) {
     if (event.type !== 'message' || event.message?.type !== 'text' || !event.source?.userId) continue;
 
     const userId = event.source.userId;
     const text   = event.message.text.trim();
+    console.log('[Webhook] メッセージ受信:', text);
 
     // ── 初回メッセージ：ユーザーID登録 ──────────────────
     const saved = await db.getSetting('line_user_id').catch(() => null);
